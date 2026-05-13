@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Meal Planner</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    input, select { padding: 8px; margin: 4px; border: 1px solid #ccc; border-radius: 6px; }
+    button { padding: 8px 16px; background: #1D9E75; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    .card { border: 1px solid #eee; border-radius: 8px; padding: 16px; margin: 8px 0; }
+    h2 { color: #333; }
+  </style>
+</head>
+<body>
+  <h1>🍽️ Meal Planner</h1>
+
+  <h2>Add a Recipe</h2>
+  <input id="rname" placeholder="Recipe name">
+  <input id="rcuisine" placeholder="Cuisine (e.g. Indian)">
+  <input id="rprep" placeholder="Prep mins" type="number">
+  <input id="rservings" placeholder="Servings" type="number">
+  <button onclick="addRecipe()">Add Recipe</button>
+
+  <h2>All Recipes</h2>
+  <button onclick="loadRecipes()">Refresh</button>
+  <div id="recipes"></div>
+
+  <h2>Plan a Meal</h2>
+  <input id="week" placeholder="Week (e.g. 2024-W22)">
+  <select id="day">
+    <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+    <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+  </select>
+  <input id="planrid" placeholder="Recipe ID" type="number">
+  <button onclick="planMeal()">Plan It</button>
+
+  <h2>Weekly Plan</h2>
+  <input id="viewweek" placeholder="Week (e.g. 2024-W22)">
+  <button onclick="viewPlan()">View Plan</button>
+  <div id="plan"></div>
+
+<script>
+  const BASE = "";
+
+  async function addRecipe() {
+    await fetch(BASE+"/recipes", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        name: document.getElementById("rname").value,
+        cuisine: document.getElementById("rcuisine").value,
+        prep_minutes: parseInt(document.getElementById("rprep").value)||0,
+        servings: parseInt(document.getElementById("rservings").value)||2
+      })
+    });
+    loadRecipes();
+  }
+
+  async function loadRecipes() {
+    const res = await fetch(BASE+"/recipes");
+    const data = await res.json();
+    document.getElementById("recipes").innerHTML =
+      data.map(r => `<div class="card"><b>${r.name}</b> — ${r.cuisine} | ${r.prep_minutes} mins | ${r.servings} servings (ID: ${r.id})</div>`).join("");
+  }
+
+  async function planMeal() {
+    await fetch(BASE+"/mealplan", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        week: document.getElementById("week").value,
+        day: document.getElementById("day").value,
+        recipe_id: parseInt(document.getElementById("planrid").value)
+      })
+    });
+    alert("Meal planned!");
+  }
+
+  async function viewPlan() {
+    const week = document.getElementById("viewweek").value;
+    const res = await fetch(BASE+`/mealplan?week=${week}`);
+    const data = await res.json();
+    document.getElementById("plan").innerHTML =
+      data.map(r => `<div class="card"><b>${r.day_of_week}</b>: ${r.name}</div>`).join("");
+  }
+
+  loadRecipes();
+</script>
+</body>
+</html>
