@@ -3,38 +3,59 @@
 <head>
   <title>Meal Planner</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
-    input, select { padding: 8px; margin: 4px; border: 1px solid #ccc; border-radius: 6px; }
-    button { padding: 8px 16px; background: #1D9E75; color: white; border: none; border-radius: 6px; cursor: pointer; }
-    .card { border: 1px solid #eee; border-radius: 8px; padding: 16px; margin: 8px 0; }
-    h2 { color: #333; }
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #f9f9f9; }
+    h1 { color: #1D9E75; }
+    h2 { color: #333; margin-top: 32px; }
+    input, select { padding: 8px; margin: 4px; border: 1px solid #ccc; border-radius: 6px; width: 180px; }
+    button { padding: 8px 16px; background: #1D9E75; color: white; border: none; border-radius: 6px; cursor: pointer; margin: 4px; }
+    button:hover { background: #0F6E56; }
+    .card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 18px; margin: 8px 0; background: white; }
+    .tag { background: #E1F5EE; color: #0F6E56; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 6px; }
+    .success { color: #1D9E75; font-size: 13px; margin: 4px 0; }
+    .empty { color: #999; font-size: 14px; padding: 12px 0; }
   </style>
 </head>
 <body>
-  <h1>🍽️ Meal Planner</h1>
+
+  <h1>Meal Planner</h1>
 
   <h2>Add a Recipe</h2>
   <input id="rname" placeholder="Recipe name">
-  <input id="rcuisine" placeholder="Cuisine (e.g. Indian)">
+  <input id="rcuisine" placeholder="Cuisine e.g. Indian">
   <input id="rprep" placeholder="Prep mins" type="number">
   <input id="rservings" placeholder="Servings" type="number">
+  <br>
   <button onclick="addRecipe()">Add Recipe</button>
+  <p id="addmsg" class="success"></p>
 
   <h2>All Recipes</h2>
+  <input id="searchcuisine" placeholder="Filter by cuisine">
   <button onclick="loadRecipes()">Refresh</button>
-  <div id="recipes"></div>
+  <button onclick="searchRecipes()">Search</button>
+  <div id="recipes"><p class="empty">Loading...</p></div>
+
+  <h2>Add Ingredient to Recipe</h2>
+  <input id="ing_rid" placeholder="Recipe ID" type="number">
+  <input id="ing_name" placeholder="Ingredient name">
+  <input id="ing_qty" placeholder="Quantity e.g. 2">
+  <input id="ing_unit" placeholder="Unit e.g. cups">
+  <br>
+  <button onclick="addIngredient()">Add Ingredient</button>
+  <p id="ingmsg" class="success"></p>
 
   <h2>Plan a Meal</h2>
-  <input id="week" placeholder="Week (e.g. 2024-W22)">
+  <input id="week" placeholder="e.g. 2024-W22">
   <select id="day">
     <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
     <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
   </select>
   <input id="planrid" placeholder="Recipe ID" type="number">
+  <br>
   <button onclick="planMeal()">Plan It</button>
+  <p id="planmsg" class="success"></p>
 
-  <h2>Weekly Plan</h2>
-  <input id="viewweek" placeholder="Week (e.g. 2024-W22)">
+  <h2>View Weekly Plan</h2>
+  <input id="viewweek" placeholder="e.g. 2024-W22">
   <button onclick="viewPlan()">View Plan</button>
   <div id="plan"></div>
 
@@ -42,43 +63,101 @@
   const BASE = "";
 
   async function addRecipe() {
-    await fetch(BASE+"/recipes", {
-      method:"POST", headers:{"Content-Type":"application/json"},
+    const res = await fetch(BASE+"/recipes", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         name: document.getElementById("rname").value,
         cuisine: document.getElementById("rcuisine").value,
-        prep_minutes: parseInt(document.getElementById("rprep").value)||0,
-        servings: parseInt(document.getElementById("rservings").value)||2
+        prep_minutes: parseInt(document.getElementById("rprep").value) || 0,
+        servings: parseInt(document.getElementById("rservings").value) || 2
       })
     });
+    document.getElementById("addmsg").textContent = "Recipe added!";
+    document.getElementById("rname").value = "";
+    document.getElementById("rcuisine").value = "";
     loadRecipes();
   }
 
   async function loadRecipes() {
     const res = await fetch(BASE+"/recipes");
     const data = await res.json();
-    document.getElementById("recipes").innerHTML =
-      data.map(r => `<div class="card"><b>${r.name}</b> — ${r.cuisine} | ${r.prep_minutes} mins | ${r.servings} servings (ID: ${r.id})</div>`).join("");
+    const div = document.getElementById("recipes");
+    if (data.length === 0) {
+      div.innerHTML = "<p class='empty'>No recipes yet. Add one above!</p>";
+      return;
+    }
+    div.innerHTML = data.map(r =>
+      `<div class="card">
+        <b>${r.name}</b>
+        <span class="tag">${r.cuisine || "No cuisine"}</span>
+        <span class="tag">${r.prep_minutes} mins</span>
+        <span class="tag">${r.servings} servings</span>
+        <span style="color:#999;font-size:12px;float:right">ID: ${r.id}</span>
+      </div>`
+    ).join("");
+  }
+
+  async function searchRecipes() {
+    const cuisine = document.getElementById("searchcuisine").value;
+    const res = await fetch(BASE+`/recipes/search?cuisine=${cuisine}`);
+    const data = await res.json();
+    const div = document.getElementById("recipes");
+    if (data.length === 0) {
+      div.innerHTML = "<p class='empty'>No recipes found.</p>";
+      return;
+    }
+    div.innerHTML = data.map(r =>
+      `<div class="card">
+        <b>${r.name}</b>
+        <span class="tag">${r.cuisine || "No cuisine"}</span>
+        <span class="tag">${r.prep_minutes} mins</span>
+        <span class="tag">${r.servings} servings</span>
+        <span style="color:#999;font-size:12px;float:right">ID: ${r.id}</span>
+      </div>`
+    ).join("");
+  }
+
+  async function addIngredient() {
+    const rid = parseInt(document.getElementById("ing_rid").value);
+    await fetch(BASE+`/recipes/${rid}/ingredients`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        name: document.getElementById("ing_name").value,
+        quantity: document.getElementById("ing_qty").value,
+        unit: document.getElementById("ing_unit").value
+      })
+    });
+    document.getElementById("ingmsg").textContent = "Ingredient added!";
+    document.getElementById("ing_name").value = "";
   }
 
   async function planMeal() {
     await fetch(BASE+"/mealplan", {
-      method:"POST", headers:{"Content-Type":"application/json"},
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         week: document.getElementById("week").value,
         day: document.getElementById("day").value,
         recipe_id: parseInt(document.getElementById("planrid").value)
       })
     });
-    alert("Meal planned!");
+    document.getElementById("planmsg").textContent = "Meal planned!";
   }
 
   async function viewPlan() {
     const week = document.getElementById("viewweek").value;
     const res = await fetch(BASE+`/mealplan?week=${week}`);
     const data = await res.json();
-    document.getElementById("plan").innerHTML =
-      data.map(r => `<div class="card"><b>${r.day_of_week}</b>: ${r.name}</div>`).join("");
+    const div = document.getElementById("plan");
+    if (data.length === 0) {
+      div.innerHTML = "<p class='empty'>No meals planned for this week.</p>";
+      return;
+    }
+    div.innerHTML = data.map(r =>
+      `<div class="card"><b>${r.day_of_week}</b>: ${r.name}</div>`
+    ).join("");
   }
 
   loadRecipes();
