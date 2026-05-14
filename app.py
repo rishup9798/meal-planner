@@ -1,10 +1,24 @@
 from flask import Flask, request, jsonify
 from sqlalchemy import create_engine, text
+from opencensus.ext.azure.log_exporter import AzureLogHandler
 import os
 import logging
 
 logging.basicConfig(level=logging.INFO)
+
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+connection_string = os.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
+
+if connection_string:
+    logger.addHandler(
+        AzureLogHandler(
+            connection_string=connection_string
+        )
+    )
+
+logger.info("Meal Planner App Started")
 
 app = Flask(__name__)
 engine = create_engine(os.getenv("DATABASE_URL"))
@@ -191,6 +205,13 @@ loadRecipes();
 @app.route("/")
 def home():
     return jsonify({"message": "Meal Planner API is live!"})
+  
+@app.route("/health")
+def health():
+    return jsonify({
+        "status": "healthy",
+        "service": "Meal Planner API"
+    }), 200
 
 @app.route("/ui")
 def ui():
@@ -219,7 +240,9 @@ def add_recipe():
             ), {"name": d["name"], "cuisine": d.get("cuisine",""),
                 "prep": d.get("prep_minutes",0), "servings": d.get("servings",2)})
             c.commit()
-        logger.info(f"Recipe added: {d['name']}")
+        logger.info(
+    f"Recipe added successfully: {d['name']}"
+)
         return jsonify({"message": "Recipe added"}), 201
     except Exception as e:
         logger.error(f"Error: {e}")
@@ -307,6 +330,20 @@ def not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return jsonify({"error": "Internal server error"}), 500
+@app.after_request
+def secure_headers(response):
+
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Cache-Control"] = "no-store"
+
+    return response
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    port = int(os.environ.get("PORT", 8000))
+
+    app.run(
+        host="0.0.0.0",
+        port=port
+    )
