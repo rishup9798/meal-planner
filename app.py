@@ -11,7 +11,7 @@ app = Flask(__name__)
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 
-HTML = open("templates/index.html").read() if os.path.exists("templates/index.html") else "<h1>UI not found</h1>"
+HTML = open("/home/site/wwwroot/templates/index.html").read() if os.path.exists("/home/site/wwwroot/templates/index.html") else open("templates/index.html").read() if os.path.exists("templates/index.html") else "<h1>UI not found - templates missing</h1>"
 
 @app.route("/")
 def home():
