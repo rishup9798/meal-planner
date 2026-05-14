@@ -6,91 +6,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0a0a0f;
-  --surface:#13131a;
-  --card:#1a1a24;
-  --border:#ffffff12;
-  --green:#00e5a0;
-  --green2:#00b87a;
-  --amber:#ffb347;
-  --pink:#ff6b9d;
-  --blue:#4fc3f7;
-  --text:#f0f0f8;
-  --muted:#8888aa;
-}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'DM Sans',sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-body::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% 20%, #00e5a01a 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, #ff6b9d12 0%, transparent 60%),
-    radial-gradient(ellipse 50% 60% at 60% 10%, #4fc3f70d 0%, transparent 50%);
-  pointer-events:none;
-  z-index:0;
-}
+:root{--bg:#0a0a0f;--surface:#13131a;--card:#1a1a24;--border:#ffffff12;--green:#00e5a0;--amber:#ffb347;--pink:#ff6b9d;--blue:#4fc3f7;--text:#f0f0f8;--muted:#8888aa;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 20%,#00e5a01a 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,#ff6b9d12 0%,transparent 60%);pointer-events:none;z-index:0;}
 .particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
 .p{position:absolute;border-radius:50%;animation:float linear infinite;}
-@keyframes float{0%{transform:translateY(100vh) rotate(0);opacity:0}10%{opacity:1}90%{opacity:.3}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+@keyframes float{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:.3}100%{transform:translateY(-10vh);opacity:0}}
 .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 20px 60px;}
-.hero{text-align:center;padding:48px 0 40px;perspective:600px;}
-.hero-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(42px,8vw,72px);
-  font-weight:900;
-  line-height:1;
-  background:linear-gradient(135deg,var(--green) 0%,var(--blue) 50%,var(--pink) 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  animation:titleIn .8s cubic-bezier(.16,1,.3,1) both;
-}
-@keyframes titleIn{from{opacity:0;transform:translateY(30px) rotateX(20deg)}to{opacity:1;transform:translateY(0) rotateX(0)}}
-.hero-sub{color:var(--muted);font-size:15px;margin-top:12px;letter-spacing:.05em;animation:fadeUp .8s .2s both;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;animation:fadeUp .6s .3s both;}
-.tab{
-  padding:10px 22px;border-radius:40px;border:1px solid var(--border);
-  background:var(--surface);color:var(--muted);cursor:pointer;
-  font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;
-  transition:all .25s;position:relative;overflow:hidden;
-}
-.tab::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#00e5a022,#4fc3f711);opacity:0;transition:opacity .25s;}
+.hero{text-align:center;padding:48px 0 40px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(42px,8vw,72px);font-weight:900;line-height:1;background:linear-gradient(135deg,var(--green) 0%,var(--blue) 50%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:titleIn .8s cubic-bezier(.16,1,.3,1) both;}
+@keyframes titleIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-sub{color:var(--muted);font-size:15px;margin-top:12px;letter-spacing:.05em;}
+.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;}
+.tab{padding:10px 22px;border-radius:40px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-size:13px;font-weight:500;transition:all .25s;}
 .tab:hover{color:var(--text);border-color:#00e5a066;}
-.tab:hover::before{opacity:1;}
 .tab.active{background:linear-gradient(135deg,var(--green),var(--blue));color:#000;border-color:transparent;font-weight:600;}
-.section{display:none;animation:sectionIn .4s cubic-bezier(.16,1,.3,1);}
+.section{display:none;animation:sectionIn .4s ease;}
 .section.active{display:block;}
 @keyframes sectionIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.card-3d{
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
-  padding:28px;margin-bottom:20px;transition:transform .3s,box-shadow .3s;
-  transform-style:preserve-3d;position:relative;overflow:hidden;
-}
-.card-3d::before{
-  content:'';position:absolute;inset:0;border-radius:20px;
-  background:linear-gradient(135deg,#ffffff08 0%,transparent 60%);pointer-events:none;
-}
-.card-3d:hover{
-  transform:translateY(-4px) rotateX(2deg);
-  box-shadow:0 20px 60px #00000066, 0 0 40px #00e5a022;
-}
+.card-3d{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:20px;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
+.card-3d::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,#ffffff08 0%,transparent 60%);pointer-events:none;}
+.card-3d:hover{transform:translateY(-4px);box-shadow:0 20px 60px #00000066,0 0 40px #00e5a022;}
 .card-accent{border-left:3px solid var(--green);}
 .card-accent-amber{border-left:3px solid var(--amber);}
 .card-accent-pink{border-left:3px solid var(--pink);}
-.card-title{
-  font-family:'Playfair Display',serif;font-size:20px;font-weight:700;
-  margin-bottom:20px;color:var(--text);display:flex;align-items:center;gap:10px;
-}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+.card-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0;}
 .dot-amber{background:var(--amber);box-shadow:0 0 8px var(--amber);}
 .dot-pink{background:var(--pink);box-shadow:0 0 8px var(--pink);}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -98,51 +39,22 @@ body::before{
 @media(max-width:600px){.form-grid,.form-grid.cols3{grid-template-columns:1fr;}}
 .field{display:flex;flex-direction:column;gap:6px;}
 .field label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
-input,select{
-  background:#0d0d14;border:1px solid var(--border);border-radius:10px;
-  padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;
-  font-size:14px;transition:border-color .2s,box-shadow .2s;width:100%;
-}
+input,select{background:#0d0d14;border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .2s,box-shadow .2s;width:100%;}
 input:focus,select:focus{outline:none;border-color:#00e5a088;box-shadow:0 0 0 3px #00e5a018;}
 select option{background:#1a1a24;}
-.btn{
-  padding:12px 28px;border-radius:12px;border:none;
-  font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;
-  cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
-}
-.btn::after{content:'';position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .15s;}
-.btn:active::after{opacity:.1;}
+.btn{padding:12px 28px;border-radius:12px;border:none;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
 .btn-primary{background:linear-gradient(135deg,var(--green),var(--blue));color:#000;box-shadow:0 4px 20px #00e5a044;}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px #00e5a066;}
 .btn-amber{background:linear-gradient(135deg,var(--amber),#ff8c42);color:#000;box-shadow:0 4px 20px #ffb34733;}
-.btn-amber:hover{transform:translateY(-2px);}
 .btn-pink{background:linear-gradient(135deg,var(--pink),#e040fb);color:#fff;box-shadow:0 4px 20px #ff6b9d33;}
-.btn-pink:hover{transform:translateY(-2px);}
 .btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
-.toast{
-  position:fixed;bottom:24px;right:24px;z-index:999;
-  background:var(--card);border:1px solid #00e5a044;
-  padding:14px 20px;border-radius:14px;font-size:13px;color:var(--green);
-  box-shadow:0 8px 32px #000a,0 0 20px #00e5a022;
-  transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.16,1,.3,1);
-  pointer-events:none;max-width:280px;
-}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--card);border:1px solid #00e5a044;padding:14px 20px;border-radius:14px;font-size:13px;color:var(--green);box-shadow:0 8px 32px #000a;transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.16,1,.3,1);pointer-events:none;max-width:280px;}
 .toast.show{transform:translateY(0);opacity:1;}
 .recipes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:16px;}
-.recipe-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:20px;transition:all .3s;position:relative;overflow:hidden;
-}
-.recipe-card::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,#00e5a008,transparent);opacity:0;transition:opacity .3s;
-}
-.recipe-card:hover{
-  transform:translateY(-6px) scale(1.01);border-color:#00e5a044;
-  box-shadow:0 16px 40px #000a,0 0 30px #00e5a018;
-}
-.recipe-card:hover::after{opacity:1;}
-.rc-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:8px;}
+.recipe-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;transition:all .3s;position:relative;}
+.recipe-card:hover{transform:translateY(-6px);border-color:#00e5a044;box-shadow:0 16px 40px #000a;}
+.rc-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:6px;}
 .rc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
 .tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;}
 .tag-green{background:#00e5a018;color:var(--green);}
@@ -151,34 +63,27 @@ select option{background:#1a1a24;}
 .rc-id{position:absolute;top:14px;right:14px;font-size:10px;color:var(--muted);background:var(--bg);padding:2px 7px;border-radius:8px;}
 .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:16px;}
 @media(max-width:700px){.week-grid{grid-template-columns:repeat(4,1fr);}}
-@media(max-width:400px){.week-grid{grid-template-columns:repeat(2,1fr);}}
-.day-cell{
-  background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:12px 8px;text-align:center;transition:all .3s;min-height:90px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-}
+.day-cell{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;transition:all .3s;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
 .day-cell.has-meal{border-color:#00e5a044;background:#00e5a008;}
 .day-cell:hover{transform:translateY(-3px);box-shadow:0 8px 24px #000a;}
 .day-name{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
 .day-meal{font-size:12px;color:var(--green);font-weight:500;line-height:1.3;}
-.day-empty{font-size:18px;opacity:.2;}
-.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:20px auto;}
+.day-empty{font-size:20px;opacity:.15;}
+.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin:24px auto;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty-state{text-align:center;padding:32px;color:var(--muted);font-size:14px;}
-.search-row{display:flex;gap:10px;margin-bottom:4px;}
-.search-row input{flex:1;}
+.search-row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.search-row input{flex:1;min-width:140px;}
+.ing-row{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 </style>
 </head>
 <body>
-
 <div class="particles" id="particles"></div>
-
 <div class="wrap">
   <div class="hero">
     <div class="hero-title">Meal Planner</div>
     <p class="hero-sub">Plan smarter. Eat better. Live deliciously.</p>
   </div>
-
   <div class="tabs">
     <div class="tab active" onclick="switchTab('recipes')">Recipes</div>
     <div class="tab" onclick="switchTab('ingredients')">Ingredients</div>
@@ -188,7 +93,7 @@ select option{background:#1a1a24;}
   <!-- RECIPES -->
   <div class="section active" id="tab-recipes">
     <div class="card-3d card-accent">
-      <div class="card-title"><span class="dot"></span> Add New Recipe</div>
+      <div class="card-title"><span class="dot"></span>Add New Recipe</div>
       <div class="form-grid">
         <div class="field"><label>Recipe Name</label><input id="rname" placeholder="e.g. Butter Chicken"></div>
         <div class="field"><label>Cuisine</label><input id="rcuisine" placeholder="e.g. Indian"></div>
@@ -198,11 +103,11 @@ select option{background:#1a1a24;}
       <div class="btn-row"><button class="btn btn-primary" onclick="addRecipe()">Add Recipe</button></div>
     </div>
     <div class="card-3d">
-      <div class="card-title"><span class="dot"></span> All Recipes</div>
+      <div class="card-title"><span class="dot"></span>All Recipes</div>
       <div class="search-row">
-        <input id="searchcuisine" placeholder="Search by cuisine...">
+        <input id="searchcuisine" placeholder="Filter by cuisine...">
         <button class="btn btn-amber" onclick="searchRecipes()">Search</button>
-        <button class="btn btn-primary" onclick="loadRecipes()">All</button>
+        <button class="btn btn-primary" onclick="loadRecipes()">Show All</button>
       </div>
       <div id="recipes"><div class="spinner"></div></div>
     </div>
@@ -211,19 +116,19 @@ select option{background:#1a1a24;}
   <!-- INGREDIENTS -->
   <div class="section" id="tab-ingredients">
     <div class="card-3d card-accent-amber">
-      <div class="card-title"><span class="dot dot-amber"></span> Add Ingredient</div>
+      <div class="card-title"><span class="dot dot-amber"></span>Add Ingredient</div>
       <div class="form-grid cols3">
         <div class="field"><label>Recipe ID</label><input id="ing_rid" type="number" placeholder="1"></div>
-        <div class="field"><label>Ingredient</label><input id="ing_name" placeholder="e.g. Chicken"></div>
+        <div class="field"><label>Ingredient Name</label><input id="ing_name" placeholder="e.g. Chicken"></div>
         <div class="field"><label>Quantity</label><input id="ing_qty" placeholder="e.g. 500"></div>
         <div class="field"><label>Unit</label><input id="ing_unit" placeholder="e.g. grams"></div>
       </div>
       <div class="btn-row"><button class="btn btn-amber" onclick="addIngredient()">Add Ingredient</button></div>
     </div>
     <div class="card-3d card-accent-amber">
-      <div class="card-title"><span class="dot dot-amber"></span> View Ingredients</div>
+      <div class="card-title"><span class="dot dot-amber"></span>View Ingredients</div>
       <div class="search-row">
-        <input id="view_rid" type="number" placeholder="Enter Recipe ID...">
+        <input id="view_rid" type="number" placeholder="Enter Recipe ID">
         <button class="btn btn-amber" onclick="viewIngredients()">View</button>
       </div>
       <div id="ingredients-list"><div class="empty-state">Enter a recipe ID above</div></div>
@@ -233,7 +138,7 @@ select option{background:#1a1a24;}
   <!-- PLANNER -->
   <div class="section" id="tab-planner">
     <div class="card-3d card-accent-pink">
-      <div class="card-title"><span class="dot dot-pink"></span> Plan a Meal</div>
+      <div class="card-title"><span class="dot dot-pink"></span>Plan a Meal</div>
       <div class="form-grid cols3">
         <div class="field"><label>Week</label><input id="week" placeholder="e.g. 2024-W22"></div>
         <div class="field"><label>Day</label>
@@ -247,12 +152,12 @@ select option{background:#1a1a24;}
       <div class="btn-row"><button class="btn btn-pink" onclick="planMeal()">Plan It</button></div>
     </div>
     <div class="card-3d card-accent-pink">
-      <div class="card-title"><span class="dot dot-pink"></span> Weekly View</div>
+      <div class="card-title"><span class="dot dot-pink"></span>Weekly View</div>
       <div class="search-row">
         <input id="viewweek" placeholder="e.g. 2024-W22">
         <button class="btn btn-pink" onclick="viewPlan()">View Plan</button>
       </div>
-      <div id="plan"><div class="empty-state">Enter a week above to see your plan</div></div>
+      <div id="plan"><div class="empty-state">Enter a week to see your plan</div></div>
     </div>
   </div>
 </div>
@@ -260,159 +165,153 @@ select option{background:#1a1a24;}
 <div class="toast" id="toast"></div>
 
 <script>
-const BASE = "";
 const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 
 function genParticles(){
   const c = document.getElementById("particles");
   for(let i=0;i<18;i++){
     const p = document.createElement("div");
-    p.className = "p";
-    const sz = Math.random()*4+2;
-    const colors = ["#00e5a0","#4fc3f7","#ff6b9d","#ffb347"];
-    p.style.cssText = `width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s;opacity:.6;`;
+    p.className="p";
+    const sz=Math.random()*4+2;
+    const cols=["#00e5a0","#4fc3f7","#ff6b9d","#ffb347"];
+    p.style.cssText=`width:${sz}px;height:${sz}px;background:${cols[Math.floor(Math.random()*4)]};left:${Math.random()*100}%;animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s;`;
     c.appendChild(p);
   }
 }
 genParticles();
 
-function showToast(msg, color="#00e5a0"){
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.style.color = color;
-  t.style.borderColor = color+"44";
-  t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"), 2800);
+function showToast(msg,color="#00e5a0"){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.style.color=color;t.style.borderColor=color+"44";
+  t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);
 }
 
 function switchTab(name){
-  document.querySelectorAll(".tab").forEach((t,i)=>{
-    t.classList.toggle("active", ["recipes","ingredients","planner"][i]===name);
-  });
+  const names=["recipes","ingredients","planner"];
+  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active",names[i]===name));
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById("tab-"+name).classList.add("active");
 }
 
 async function addRecipe(){
-  const name = document.getElementById("rname").value.trim();
+  const name=document.getElementById("rname").value.trim();
   if(!name){showToast("Enter a recipe name!","#ff6b9d");return;}
-  await fetch(BASE+"/recipes",{
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      name,
-      cuisine: document.getElementById("rcuisine").value,
-      prep_minutes: parseInt(document.getElementById("rprep").value)||0,
-      servings: parseInt(document.getElementById("rservings").value)||2
-    })
-  });
-  ["rname","rcuisine","rprep","rservings"].forEach(id=>document.getElementById(id).value="");
-  showToast("Recipe added successfully!");
-  loadRecipes();
+  try{
+    const res=await fetch("/recipes",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name,cuisine:document.getElementById("rcuisine").value,
+        prep_minutes:parseInt(document.getElementById("rprep").value)||0,
+        servings:parseInt(document.getElementById("rservings").value)||2})});
+    if(res.ok){["rname","rcuisine","rprep","rservings"].forEach(id=>document.getElementById(id).value="");
+      showToast("Recipe added!");loadRecipes();}
+    else showToast("Error saving!","#ff6b9d");
+  }catch(e){showToast("Connection error","#ff6b9d");}
 }
 
 async function loadRecipes(){
-  const div = document.getElementById("recipes");
-  div.innerHTML = "<div class='spinner'></div>";
-  const res = await fetch(BASE+"/recipes");
-  const data = await res.json();
-  renderRecipes(data, div);
+  const div=document.getElementById("recipes");
+  div.innerHTML="<div class='spinner'></div>";
+  try{
+    const res=await fetch("/recipes");
+    const data=await res.json();
+    renderRecipes(data,div);
+  }catch(e){div.innerHTML="<div class='empty-state'>Could not load recipes</div>";}
 }
 
 async function searchRecipes(){
-  const cuisine = document.getElementById("searchcuisine").value;
-  const div = document.getElementById("recipes");
-  div.innerHTML = "<div class='spinner'></div>";
-  const res = await fetch(BASE+`/recipes/search?cuisine=${encodeURIComponent(cuisine)}`);
-  const data = await res.json();
-  renderRecipes(data, div);
+  const cuisine=document.getElementById("searchcuisine").value.trim();
+  if(!cuisine){loadRecipes();return;}
+  const div=document.getElementById("recipes");
+  div.innerHTML="<div class='spinner'></div>";
+  try{
+    const res=await fetch(`/recipes/search?cuisine=${encodeURIComponent(cuisine)}`);
+    const data=await res.json();renderRecipes(data,div);
+  }catch(e){div.innerHTML="<div class='empty-state'>Search failed</div>";}
 }
 
-function renderRecipes(data, div){
-  if(!data.length){div.innerHTML="<div class='empty-state'>No recipes found. Add one above!</div>";return;}
-  div.innerHTML = `<div class='recipes-grid'>${data.map(r=>`
+function renderRecipes(data,div){
+  if(!data.length){div.innerHTML="<div class='empty-state'>No recipes yet. Add one above!</div>";return;}
+  div.innerHTML=`<div class='recipes-grid'>${data.map(r=>`
     <div class='recipe-card'>
       <div class='rc-id'>ID: ${r.id}</div>
       <div class='rc-name'>${r.name}</div>
-      <div style='color:var(--muted);font-size:12px;margin-top:2px;'>Added ${new Date(r.created_at).toLocaleDateString()}</div>
+      <div style='color:var(--muted);font-size:12px;margin-top:2px;'>${r.cuisine||"No cuisine"}</div>
       <div class='rc-tags'>
-        ${r.cuisine?`<span class='tag tag-green'>${r.cuisine}</span>`:""}
+        ${r.cuisine?`<span class='tag tag-green'>${r.cuisine}</span>`:''}
         <span class='tag tag-blue'>${r.prep_minutes} mins</span>
         <span class='tag tag-amber'>${r.servings} servings</span>
       </div>
-    </div>`).join("")}</div>`;
+    </div>`).join('')}</div>`;
 }
 
 async function addIngredient(){
-  const rid = parseInt(document.getElementById("ing_rid").value);
-  const name = document.getElementById("ing_name").value.trim();
-  if(!rid||!name){showToast("Enter recipe ID and ingredient!","#ffb347");return;}
-  await fetch(BASE+`/recipes/${rid}/ingredients`,{
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      name,
-      quantity: document.getElementById("ing_qty").value,
-      unit: document.getElementById("ing_unit").value
-    })
-  });
-  ["ing_name","ing_qty","ing_unit"].forEach(id=>document.getElementById(id).value="");
-  showToast("Ingredient added!","#ffb347");
+  const rid=parseInt(document.getElementById("ing_rid").value);
+  const name=document.getElementById("ing_name").value.trim();
+  if(!rid||!name){showToast("Enter recipe ID and name!","#ffb347");return;}
+  try{
+    const res=await fetch(`/recipes/${rid}/ingredients`,{method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name,quantity:document.getElementById("ing_qty").value,
+        unit:document.getElementById("ing_unit").value})});
+    if(res.ok){["ing_name","ing_qty","ing_unit"].forEach(id=>document.getElementById(id).value="");
+      showToast("Ingredient added!","#ffb347");}
+    else showToast("Error!","#ff6b9d");
+  }catch(e){showToast("Connection error","#ff6b9d");}
 }
 
 async function viewIngredients(){
-  const rid = parseInt(document.getElementById("view_rid").value);
+  const rid=parseInt(document.getElementById("view_rid").value);
   if(!rid){showToast("Enter a recipe ID!","#ffb347");return;}
-  const div = document.getElementById("ingredients-list");
-  div.innerHTML = "<div class='spinner'></div>";
-  const res = await fetch(BASE+`/recipes/${rid}/ingredients`);
-  const data = await res.json();
-  if(!data.length){div.innerHTML="<div class='empty-state'>No ingredients yet for this recipe.</div>";return;}
-  div.innerHTML = `<div style='margin-top:12px;display:flex;flex-direction:column;gap:8px;'>
-    ${data.map(i=>`
-      <div style='background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;'>
-        <span style='font-weight:500;'>${i.name}</span>
+  const div=document.getElementById("ingredients-list");
+  div.innerHTML="<div class='spinner'></div>";
+  try{
+    const res=await fetch(`/recipes/${rid}/ingredients`);
+    const data=await res.json();
+    if(!data.length){div.innerHTML="<div class='empty-state'>No ingredients yet.</div>";return;}
+    div.innerHTML=data.map(i=>`
+      <div class='ing-row'>
+        <span style='font-weight:500'>${i.name}</span>
         <span class='tag tag-amber'>${i.quantity} ${i.unit}</span>
-      </div>`).join("")}
-  </div>`;
+      </div>`).join('');
+  }catch(e){div.innerHTML="<div class='empty-state'>Could not load</div>";}
 }
 
 async function planMeal(){
-  const week = document.getElementById("week").value.trim();
-  const rid = parseInt(document.getElementById("planrid").value);
-  if(!week||!rid){showToast("Fill in all fields!","#ff6b9d");return;}
-  await fetch(BASE+"/mealplan",{
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({week, day:document.getElementById("day").value, recipe_id:rid})
-  });
-  showToast("Meal planned!","#ff6b9d");
+  const week=document.getElementById("week").value.trim();
+  const rid=parseInt(document.getElementById("planrid").value);
+  if(!week||!rid){showToast("Fill all fields!","#ff6b9d");return;}
+  try{
+    const res=await fetch("/mealplan",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({week,day:document.getElementById("day").value,recipe_id:rid})});
+    if(res.ok)showToast("Meal planned!","#ff6b9d");
+    else showToast("Error!","#ff6b9d");
+  }catch(e){showToast("Connection error","#ff6b9d");}
 }
 
 async function viewPlan(){
-  const week = document.getElementById("viewweek").value.trim();
+  const week=document.getElementById("viewweek").value.trim();
   if(!week){showToast("Enter a week!","#ff6b9d");return;}
-  const res = await fetch(BASE+`/mealplan?week=${encodeURIComponent(week)}`);
-  const data = await res.json();
-  const div = document.getElementById("plan");
-  const map = {};
-  data.forEach(r=>map[r.day_of_week]=r.name);
-  div.innerHTML = `<div class='week-grid'>
-    ${DAYS.map(d=>`
+  const div=document.getElementById("plan");
+  div.innerHTML="<div class='spinner'></div>";
+  try{
+    const res=await fetch(`/mealplan?week=${encodeURIComponent(week)}`);
+    const data=await res.json();
+    const map={};data.forEach(r=>map[r.day_of_week]=r.name);
+    div.innerHTML=`<div class='week-grid'>${DAYS.map(d=>`
       <div class='day-cell ${map[d]?"has-meal":""}'>
         <div class='day-name'>${d.slice(0,3)}</div>
         ${map[d]?`<div class='day-meal'>${map[d]}</div>`:`<div class='day-empty'>—</div>`}
-      </div>`).join("")}
-  </div>`;
+      </div>`).join('')}</div>`;
+  }catch(e){div.innerHTML="<div class='empty-state'>Could not load plan</div>";}
 }
 
-document.addEventListener("mousemove", e=>{
+document.addEventListener("mousemove",e=>{
   document.querySelectorAll(".card-3d").forEach(card=>{
-    const r = card.getBoundingClientRect();
-    const dx = (e.clientX-(r.left+r.width/2))/(r.width/2);
-    const dy = (e.clientY-(r.top+r.height/2))/(r.height/2);
+    const r=card.getBoundingClientRect();
+    const dx=(e.clientX-(r.left+r.width/2))/(r.width/2);
+    const dy=(e.clientY-(r.top+r.height/2))/(r.height/2);
     if(Math.sqrt(dx*dx+dy*dy)<1.5){
       card.style.transform=`perspective(800px) rotateY(${dx*4}deg) rotateX(${-dy*4}deg) translateY(-2px)`;
-    } else {
-      card.style.transform="";
-    }
+    }else{card.style.transform="";}
   });
 });
 
